@@ -44,7 +44,7 @@ func CreateFile(filePath string) error {
 	defer func(file *os.File) {
 		err := file.Close()
 		if err != nil {
-
+			//TODO handle file close error
 		}
 	}(file)
 
