@@ -3,11 +3,16 @@ package controllers
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/mowamed/go-admin/database"
+	"github.com/mowamed/go-admin/middlewares"
 	"github.com/mowamed/go-admin/models"
 	"strconv"
 )
 
 func AllRoles(c *fiber.Ctx) error {
+	if err := middlewares.IsAuthorize(c, "roles"); err != nil {
+		return err
+	}
+
 	var roles []models.Role
 
 	database.DB.Preload("Permission").Find(&roles)
@@ -16,6 +21,10 @@ func AllRoles(c *fiber.Ctx) error {
 }
 
 func CreateRole(c *fiber.Ctx) error {
+	if err := middlewares.IsAuthorize(c, "roles"); err != nil {
+		return err
+	}
+
 	var roleDTO fiber.Map
 
 	if err := c.BodyParser(&roleDTO); err != nil {
@@ -45,6 +54,10 @@ func CreateRole(c *fiber.Ctx) error {
 }
 
 func GetRole(c *fiber.Ctx) error {
+	if err := middlewares.IsAuthorize(c, "roles"); err != nil {
+		return err
+	}
+
 	id, _ := strconv.Atoi(c.Params("id"))
 
 	role := models.Role{
@@ -57,6 +70,10 @@ func GetRole(c *fiber.Ctx) error {
 }
 
 func UpdateRole(c *fiber.Ctx) error {
+	if err := middlewares.IsAuthorize(c, "roles"); err != nil {
+		return err
+	}
+
 	id, _ := strconv.Atoi(c.Params("id"))
 
 	var roleDTO fiber.Map
@@ -93,6 +110,10 @@ func UpdateRole(c *fiber.Ctx) error {
 }
 
 func DeleteRole(c *fiber.Ctx) error {
+	if err := middlewares.IsAuthorize(c, "roles"); err != nil {
+		return err
+	}
+
 	id, _ := strconv.Atoi(c.Params("id"))
 
 	role := models.Role{
